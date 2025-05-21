@@ -1,4 +1,3 @@
-
 package com.example.cupreader
 
 import android.content.Intent
@@ -7,6 +6,7 @@ import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.example.cupreader.util.LocalStorage
 import com.google.android.gms.auth.api.signin.*
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.textfield.TextInputLayout
@@ -14,6 +14,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.runBlocking
 
 class LoginActivity : AppCompatActivity() {
 
@@ -87,21 +89,24 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     goToNextStep()
                 } else {
-                    FirebaseCrashlytics.getInstance().recordException(task.exception ?: Exception("Unknown sign-in error"))
-                    Toast.makeText(this, "Login failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    FirebaseCrashlytics.getInstance().recordException(
+                        task.exception ?: Exception("Unknown sign-in error"))
+                    Toast.makeText(
+                        this,
+                        "Login failed: ${task.exception?.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
     }
 
     private fun launchGoogleSignIn() {
-        val signInIntent = googleSignInClient.signInIntent
-        googleSignInLauncher.launch(signInIntent)
+        googleSignInLauncher.launch(googleSignInClient.signInIntent)
     }
 
     private fun handleGoogleSignInResult(task: com.google.android.gms.tasks.Task<GoogleSignInAccount>) {
         try {
             val account = task.getResult(ApiException::class.java)
-
             val credential = GoogleAuthProvider.getCredential(account.idToken, null)
             progressBar.visibility = View.VISIBLE
 
@@ -111,11 +116,15 @@ class LoginActivity : AppCompatActivity() {
                     if (authTask.isSuccessful) {
                         goToNextStep()
                     } else {
-                        FirebaseCrashlytics.getInstance().recordException(authTask.exception ?: Exception("Google sign-in failed"))
-                        Toast.makeText(this, "Google Sign-In failed: ${authTask.exception?.message}", Toast.LENGTH_SHORT).show()
+                        FirebaseCrashlytics.getInstance().recordException(
+                            authTask.exception ?: Exception("Google sign-in failed"))
+                        Toast.makeText(
+                            this,
+                            "Google Sign-In failed: ${authTask.exception?.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
-
         } catch (e: ApiException) {
             FirebaseCrashlytics.getInstance().recordException(e)
             Toast.makeText(this, "Google Sign-In error: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -123,24 +132,25 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun goToNextStep() {
-        val uid = auth.currentUser?.uid ?: return
+        // 1) See if we’ve already saved the user’s full name (or any other required field)
+        val hasProfile = runBlocking {
+            LocalStorage.getUserName(this@LoginActivity)
+                .firstOrNull()
+                .isNullOrBlank()
+                .not()
+        }
 
-        val intent = Intent(this, MainActivity::class.java)
-        db.collection("UserInfo").document(uid).get()
-            .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    intent.putExtra("startDestination", "main")
-                } else {
-                    intent.putExtra("startDestination", "userinfo")
-                }
-                startActivity(intent)
-                finish()
-            }
-            .addOnFailureListener {
-                FirebaseCrashlytics.getInstance().recordException(it)
-                intent.putExtra("startDestination", "userinfo")
-                startActivity(intent)
-                finish()
-            }
+        // 2) Decide where to land in MainActivity’s NavGraph
+        //    “userInfo” if profile’s missing, otherwise “main”
+        val startDest = if (hasProfile) "main" else "userInfo"
+
+        // 3) Launch MainActivity with that extra and clear the back-stack
+        Intent(this, MainActivity::class.java).apply {
+            putExtra("startDestination", startDest)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }.also {
+            startActivity(it)
+            finish()
+        }
     }
 }

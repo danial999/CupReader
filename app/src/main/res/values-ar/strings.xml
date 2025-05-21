@@ -1,3 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">قارئ الكؤوس</string>
+    <string name="welcome_title">مرحبًا بك في قارئ الكؤوس</string>
+    <string name="choose_language">اختر لغتك</string>
+    <string name="login_button">تسجيل الدخول</string>
+    <string name="full_name_label">الاسم الكامل</string>
+    <string name="date_of_birth_label">تاريخ الميلاد</string>
+    <string name="gender_label">الجنس</string>
+    <string name="preferred_language_label">اللغة المفضلة</string>
+    <string name="save_continue">حفظ والمتابعة</string>
+    <string name="male">ذكر</string>
+    <string name="female">أنثى</string>
+    <string name="other">آخر</string>
+    <string name="main_home_title">قراءة الكؤوس</string>
+
+    <string name="baking_title">وصفات الخَبز</string>
+    <string name="image1_description">كيك الشوكولاتة</string>
+    <string name="image2_description">كرواسون</string>
+    <string name="image3_description">خبز حرفي</string>
+    <string name="label_prompt">المُدخل</string>
+    <string name="prompt_placeholder">أدخل وصفة الخَبز…</string>
+    <string name="action_go">اذهب</string>
+    <string name="results_placeholder">ستظهر النتائج هنا</string>
+    <string name="choose_language_prompt">مرحبًا—ما هي اللغة التي تفضلين استخدامها؟</string>
+    <string name="language_english">English</string>
+    <string name="language_arabic">العربية</string>
+    <string name="language_hebrew">עברית</string>
+    <string name="continue_to_login">متابعة</string>
+    <!-- Arabic (values-ar/strings.xml) -->
+    <string name="profile_title">أخبريني عنكِ</string>
+    <string name="label_name">الاسم الكامل</string>
+    <string name="label_dob">تاريخ الميلاد</string>
+    <string name="label_gender">الضمائر</string>
+
 </resources>
+

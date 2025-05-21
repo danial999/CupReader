@@ -1,4 +1,7 @@
 package com.example.cupreader.data.model
 
-class AuthUser {
-}
+data class AuthUser(
+    val displayName: String?,
+    val email: String?,
+    val photoUrl: String?
+)

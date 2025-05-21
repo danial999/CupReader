@@ -1,15 +1,35 @@
 <resources>
-    <string name="app_name">قارئ الكؤوس</string>
-    <string name="welcome_title">مرحبًا بك في قارئ الكؤوس</string>
-    <string name="choose_language">اختر لغتك</string>
-    <string name="login_button">تسجيل الدخول</string>
-    <string name="full_name_label">الاسم الكامل</string>
-    <string name="date_of_birth_label">تاريخ الميلاد</string>
-    <string name="gender_label">الجنس</string>
-    <string name="preferred_language_label">اللغة المفضلة</string>
-    <string name="save_continue">حفظ والمتابعة</string>
-    <string name="male">ذكر</string>
-    <string name="female">أنثى</string>
-    <string name="other">آخر</string>
-    <string name="main_home_title">قراءة الكؤوس</string>
+    <string name="app_name">קורא הספלים</string>
+    <string name="welcome_title">ברוכים הבאים ל-CupReader</string>
+    <string name="choose_language">בחר את השפה שלך</string>
+    <string name="login_button">התחבר</string>
+    <string name="full_name_label">שם מלא</string>
+    <string name="date_of_birth_label">תאריך לידה</string>
+    <string name="gender_label">מגדר</string>
+    <string name="preferred_language_label">שפה מועדפת</string>
+    <string name="save_continue">שמור והמשך</string>
+    <string name="male">זכר</string>
+    <string name="female">נקבה</string>
+    <string name="other">אחר</string>
+    <string name="main_home_title">קריאת ספלים</string>
+    <!-- CupReadingScreen placeholders & labels -->
+    <string name="baking_title">מתכוני אפייה</string>
+    <string name="image1_description">עוגת שוקולד</string>
+    <string name="image2_description">קרואסונים</string>
+    <string name="image3_description">לחם מלאכת-יד</string>
+    <string name="label_prompt">הנחיה</string>
+    <string name="prompt_placeholder">הזן הנחיית אפייה…</string>
+    <string name="action_go">לך</string>
+    <string name="results_placeholder">התוצאות יוצגו כאן</string>
+    <string name="choose_language_prompt">היי—באיזו שפה תרצי שנדבר?</string>
+    <string name="language_english">English</string>
+    <string name="language_arabic">العربية</string>
+    <string name="language_hebrew">עברית</string>
+    <string name="continue_to_login">המשך</string>
+    <!-- Hebrew (values-he/strings.xml) -->
+    <string name="profile_title">ספרי לי עלייך</string>
+    <string name="label_name">שם מלא</string>
+    <string name="label_dob">תאריך לידה</string>
+    <string name="label_gender">כינויי גוף</string>
+
 </resources>

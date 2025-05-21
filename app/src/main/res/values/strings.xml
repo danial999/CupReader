@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">CupReader</string>
+    <string name="welcome_title">Welcome to CupReader</string>
+    <string name="choose_language">Choose your language</string>
+    <string name="login_button">Login</string>
+    <string name="full_name_label">Full Name</string>
+    <string name="date_of_birth_label">Date of Birth</string>
+    <string name="gender_label">Gender</string>
+    <string name="preferred_language_label">Preferred Language</string>
+    <string name="save_continue">Save and Continue</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="other">Other</string>
+    <string name="main_home_title">Cup Reading</string>
+    <!-- CupReadingScreen placeholders & labels -->
+    <string name="baking_title">Baking Recipes</string>
+    <string name="image1_description">Chocolate Cake</string>
+    <string name="image2_description">Croissants</string>
+    <string name="image3_description">Artisan Bread</string>
+    <string name="label_prompt">Prompt</string>
+    <string name="prompt_placeholder">Enter baking prompt…</string>
+    <string name="action_go">Go</string>
+    <string name="results_placeholder">Results will appear here</string>
+    <string name="choose_language_prompt">Hello there—what language would you like us to speak?</string>
+    <string name="language_english">English</string>
+    <string name="language_arabic">العربية</string>
+    <string name="language_hebrew">עברית</string>
+    <string name="continue_to_login">Continue</string>
+    <!-- New labels for profile screen -->
+    <string name="profile_title">Tell Me About You</string>
+    <string name="label_name">Full Name</string>
+    <string name="label_dob">Date of Birth</string>
+    <string name="label_gender">Pronouns</string>
+    <string name="error_fetching_user_info">error_saving_user_info</string>
+    <string name="success_saving_user_info">success_saving_user_info</string>
+    <string name="error_saving_user_info">error_saving_user_info</string>
+    <string name="error_not_authenticated">not authinticated</string>
+    <string name="error_permission_denied">error_permission_denied</string>
+
+</resources>

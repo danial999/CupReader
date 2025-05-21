@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">قارئ الكؤوس</string>
+    <string name="welcome_title">مرحبًا بك في قارئ الكؤوس</string>
+    <string name="choose_language">اختر لغتك</string>
+    <string name="login_button">تسجيل الدخول</string>
+    <string name="full_name_label">الاسم الكامل</string>
+    <string name="date_of_birth_label">تاريخ الميلاد</string>
+    <string name="gender_label">الجنس</string>
+    <string name="preferred_language_label">اللغة المفضلة</string>
+    <string name="save_continue">حفظ والمتابعة</string>
+    <string name="male">ذكر</string>
+    <string name="female">أنثى</string>
+    <string name="other">آخر</string>
+    <string name="main_home_title">قراءة الكؤوس</string>
+</resources>

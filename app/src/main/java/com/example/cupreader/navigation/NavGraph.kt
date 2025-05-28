@@ -14,7 +14,7 @@ sealed class Screen(val route: String) {
     object Splash     : Screen("splash")
     object Login      : Screen("login")
     object UserInfo   : Screen("userInfo")
-    object CupReading : Screen("cupReading")
+    object Main       : Screen("cupReading") // 💡 זה המסך הראשי שלך בפועל
 }
 
 @Composable
@@ -31,7 +31,8 @@ fun NavGraph(navController: NavHostController) {
                 navController = navController,
                 availableLocales = listOf(
                     Locale.ENGLISH,
-                    Locale("he")
+                    Locale("he"),
+                    Locale("ar") // ✅ ערבית נוספה
                 ),
                 onLocaleChange = { locale ->
                     // TODO: Apply locale change logic if needed
@@ -39,9 +40,9 @@ fun NavGraph(navController: NavHostController) {
             )
         }
         composable(Screen.UserInfo.route) {
-            UserInfoScreen()
+            UserInfoScreen(navController)
         }
-        composable(Screen.CupReading.route) {
+        composable(Screen.Main.route) {
             CupReadingScreen()
         }
     }

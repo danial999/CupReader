@@ -3,20 +3,20 @@ package com.example.cupreader.ui.userinfo
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
-import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.cupreader.MainActivity
+import androidx.navigation.NavController
 import com.example.cupreader.R
+import com.example.cupreader.navigation.Screen
 import com.example.cupreader.util.LocalStorage
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
@@ -27,7 +27,7 @@ import java.util.*
 @SuppressLint("StringFormatInvalid")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserInfoScreen() {
+fun UserInfoScreen(navController: NavController){
     val context = LocalContext.current
     val activity = context as? Activity
     val scope = rememberCoroutineScope()
@@ -197,12 +197,8 @@ fun UserInfoScreen() {
                                 }
                             }
                         // Navigate to main
-                        activity?.apply {
-                            Intent(this, MainActivity::class.java).apply {
-                                putExtra("startDestination", "main")
-                                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            }.also(::startActivity)
-                            finish()
+                        navController.navigate(Screen.Main.route) {
+                            popUpTo(Screen.UserInfo.route) { inclusive = true }
                         }
                     },
                     enabled = isFormValid && uid != null,

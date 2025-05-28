@@ -66,7 +66,7 @@ fun LoginScreen(
                     val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
                     auth.signInWithCredential(firebaseCredential).addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            navController.navigate(Screen.Splash.route) {
+                            navController.navigate(Screen.UserInfo.route) {
                                 popUpTo(Screen.Login.route) { inclusive = true }
                             }
                         } else {

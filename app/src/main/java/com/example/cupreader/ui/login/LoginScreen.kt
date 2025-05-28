@@ -1,77 +1,112 @@
 package com.example.cupreader.ui.login
 
-import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Intent
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
+import com.example.cupreader.R
+import java.util.*
 
-
-
-@SuppressLint("ContextCastToActivity")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(navController: NavController) {
-    val context = LocalContext.current as Activity
-    val auth = remember { FirebaseAuth.getInstance() }
+fun LoginScreen(
+    navController: NavController,
+    availableLocales: List<Locale> = listOf(Locale.ENGLISH, Locale("he")),
+    onLocaleChange: (Locale) -> Unit = {}
+) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        .requestIdToken("YOUR_WEB_CLIENT_ID")
-        .requestEmail()
-        .build()
-    val googleClient: GoogleSignInClient = GoogleSignIn.getClient(context, gso)
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-        try {
-            val account = task.getResult(ApiException::class.java)!!
-            val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-            auth.signInWithCredential(credential).addOnCompleteListener { res ->
-                if (res.isSuccessful) navController.navigate("userInfo") } }
-        catch (e: ApiException) { /* handle error */ }
-    }
+    var localeExpanded by remember { mutableStateOf(false) }
+    var selectedLocale by remember { mutableStateOf(availableLocales.first()) }
 
-    Surface(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        Column(verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
+    Surface(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            // Language dropdown at top-right
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd) {
+                ExposedDropdownMenuBox(
+                    expanded = localeExpanded,
+                    onExpandedChange = { localeExpanded = !localeExpanded },
+                    modifier = Modifier.wrapContentSize()
+                ) {
+                    TextField(
+                        value = selectedLocale.displayLanguage,
+                        onValueChange = {},
+                        readOnly = true,
+                        trailingIcon = {
+                            ExposedDropdownMenuDefaults.TrailingIcon(
+                                expanded = localeExpanded
+                            )
+                        },
+                        modifier = Modifier
+                            .menuAnchor()
+                            .clickable { localeExpanded = true },
+                        colors = ExposedDropdownMenuDefaults.textFieldColors()
+                    )
+                    ExposedDropdownMenu(
+                        expanded = localeExpanded,
+                        onDismissRequest = { localeExpanded = false }
+                    ) {
+                        availableLocales.forEach { locale ->
+                            DropdownMenuItem(
+                                text = { Text(locale.displayLanguage) },
+                                onClick = {
+                                    selectedLocale = locale
+                                    localeExpanded = false
+                                    onLocaleChange(locale)
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+
+            Spacer(Modifier.height(32.dp))
+
+            // Email
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Email") },
+                label = { Text(stringResource(R.string.label_email)) },
+                singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(Modifier.height(16.dp))
+
+            // Password
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                label = { Text("Password") },
+                label = { Text(stringResource(R.string.label_password)) },
                 visualTransformation = PasswordVisualTransformation(),
+                singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = {
-                auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { if (it.isSuccessful) navController.navigate("userInfo") }
-            }, modifier = Modifier.fillMaxWidth()) {
-                Text("Login")
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = { launcher.launch(googleClient.signInIntent) }, modifier = Modifier.fillMaxWidth()) {
-                Text("Sign in with Google")
+            Spacer(Modifier.height(24.dp))
+
+            Button(
+                onClick = {
+                    // TODO: handle authentication
+                    navController.navigate("home") {
+                        popUpTo("login") { inclusive = true }
+                    }
+                },
+                enabled = email.isNotBlank() && password.isNotBlank(),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(stringResource(R.string.login_button))
             }
         }
     }

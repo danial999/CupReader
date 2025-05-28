@@ -1,40 +1,48 @@
-package com.example.cupreader
+package com.example.cupreader.navigation
 
-import android.content.Context
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.navigation.compose.rememberNavController
-import com.example.cupreader.navigation.NavGraph
-import com.example.cupreader.ui.theme.CupReaderTheme
-import com.example.cupreader.util.LocaleUtil
-import com.example.cupreader.util.LocalStorage
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.example.cupreader.ui.login.LoginScreen
+import com.example.cupreader.ui.home.SplashScreen
+import com.example.cupreader.ui.userinfo.UserInfoScreen
+import com.example.cupreader.ui.home.CupReadingScreen
+import java.util.Locale
 
-class MainActivity : ComponentActivity() {
-    override fun attachBaseContext(newBase: Context) {
-        // Retrieve saved language code ('en', 'he', 'ar'), default to English if missing
-        val langCode = runBlocking {
-            LocalStorage.getLanguage(newBase).first() ?: "en"
+sealed class Screen(val route: String) {
+    object Splash     : Screen("splash")
+    object Login      : Screen("login")
+    object UserInfo   : Screen("userInfo")
+    object CupReading : Screen("cupReading")
+}
+
+@Composable
+fun NavGraph(navController) {
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Splash.route
+    ) {
+        composable(Screen.Splash.route) {
+            SplashScreen(navController)
         }
-        // Apply locale
-        val context = LocaleUtil.setLocale(newBase, langCode)
-        super.attachBaseContext(context)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            CupReaderTheme {
-                Surface(color = MaterialTheme.colorScheme.background) {
-                    val navController = rememberNavController()
-                    val startDest = intent.getStringExtra("startDestination") ?: "welcome"
-                    NavGraph(navController, startDest)
+        composable(Screen.Login.route) {
+            LoginScreen(
+                navController = navController,
+                availableLocales = listOf(
+                    Locale.ENGLISH,
+                    Locale("he")
+                ),
+                onLocaleChange = { locale ->
+                    // Apply locale change logic here
                 }
-            }
+            )
+        }
+        composable(Screen.UserInfo.route) {
+            UserInfoScreen()
+        }
+        composable(Screen.CupReading.route) {
+            CupReadingScreen()
         }
     }
 }

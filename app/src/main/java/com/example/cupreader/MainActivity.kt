@@ -1,48 +1,21 @@
-package com.example.cupreader.navigation
+package com.example.cupreader
 
-import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import com.example.cupreader.ui.login.LoginScreen
-import com.example.cupreader.ui.home.SplashScreen
-import com.example.cupreader.ui.userinfo.UserInfoScreen
-import com.example.cupreader.ui.home.CupReadingScreen
-import java.util.Locale
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.navigation.compose.rememberNavController
+import com.example.cupreader.navigation.NavGraph
+import com.example.cupreader.ui.theme.CupReaderTheme
 
-sealed class Screen(val route: String) {
-    object Splash     : Screen("splash")
-    object Login      : Screen("login")
-    object UserInfo   : Screen("userInfo")
-    object CupReading : Screen("cupReading")
-}
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-@Composable
-fun NavGraph(navController) {
-    NavHost(
-        navController = navController,
-        startDestination = Screen.Splash.route
-    ) {
-        composable(Screen.Splash.route) {
-            SplashScreen(navController)
-        }
-        composable(Screen.Login.route) {
-            LoginScreen(
-                navController = navController,
-                availableLocales = listOf(
-                    Locale.ENGLISH,
-                    Locale("he")
-                ),
-                onLocaleChange = { locale ->
-                    // Apply locale change logic here
-                }
-            )
-        }
-        composable(Screen.UserInfo.route) {
-            UserInfoScreen()
-        }
-        composable(Screen.CupReading.route) {
-            CupReadingScreen()
+        setContent {
+            CupReaderTheme {
+                val navController = rememberNavController()
+                NavGraph(navController = navController)
+            }
         }
     }
 }

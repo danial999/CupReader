@@ -5,7 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.cupreader.ui.login.LoginScreen
-import com.example.cupreader.ui.home.SplashScreen
+import com.example.cupreader.ui.splash.SplashScreen
 import com.example.cupreader.ui.userinfo.UserInfoScreen
 import com.example.cupreader.ui.home.CupReadingScreen
 import java.util.Locale
@@ -18,7 +18,7 @@ sealed class Screen(val route: String) {
 }
 
 @Composable
-fun NavGraph(navController) {
+fun NavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
         startDestination = Screen.Splash.route
@@ -34,7 +34,7 @@ fun NavGraph(navController) {
                     Locale("he")
                 ),
                 onLocaleChange = { locale ->
-                    // Apply locale change logic here
+                    // TODO: Apply locale change logic if needed
                 }
             )
         }

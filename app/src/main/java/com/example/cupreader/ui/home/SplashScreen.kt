@@ -20,17 +20,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.cupreader.R
+import com.example.cupreader.navigation.Screen
 
 @Composable
 fun SplashScreen(navController: NavController) {
     val visible = remember { mutableStateOf(false) }
 
-    // Trigger animation + nav delay
     LaunchedEffect(Unit) {
         visible.value = true
         Handler(Looper.getMainLooper()).postDelayed({
-            navController.navigate("welcome") {
-                popUpTo("splash") { inclusive = true }
+            navController.navigate(Screen.Login.route) {
+                popUpTo(Screen.Splash.route) { inclusive = true }
             }
         }, 2500)
     }
@@ -39,7 +39,7 @@ fun SplashScreen(navController: NavController) {
         modifier = Modifier
             .fillMaxSize()
             .background(
-                brush = Brush.verticalGradient(
+                Brush.verticalGradient(
                     colors = listOf(Color(0xFF321E1E), Color(0xFF6D3B3B))
                 )
             ),
@@ -54,7 +54,7 @@ fun SplashScreen(navController: NavController) {
                 verticalArrangement = Arrangement.Center
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.logo3),
+                    painter = painterResource(id = R.drawable.logo),
                     contentDescription = "App Logo",
                     modifier = Modifier.size(150.dp)
                 )
